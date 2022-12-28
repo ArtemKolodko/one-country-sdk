@@ -66,12 +66,13 @@ const tx = await oneCountry.updateURL('artem', 'https://twitter.com/halfin/statu
 
 #### setNameForRenter
 ```javascript
+// Assign provided name with account address
 const tx = await oneCountry.setNameForRenter('artem')
 ```
 
 #### getNameForRenter
 ```javascript
-// Address param is optional.
+// Address param is optional
 // If oneContry was initialized using Metamask provider or privateKey, user account address will be used by default. 
 const name = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
 ```
