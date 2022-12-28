@@ -46,7 +46,7 @@ const price = await oneCountry.getPriceByName('all')
 
 #### getPriceByName
 ```javascript
-const name = getPriceByName('artem')
+const price = getPriceByName('artem')
 ```
 
 #### getRecordByName
@@ -56,7 +56,8 @@ const record = getRecordByName('artem')
 
 #### rent
 ```javascript
-const tx = await oneCountry.rent('artem', 'https://twitter.com/halfin/status/1072874040', '100000000')
+const price = getPriceByName('artem')
+const tx = await oneCountry.rent('artem', 'https://twitter.com/halfin/status/1072874040', price)
 ```
 
 #### updateURL
