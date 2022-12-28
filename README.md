@@ -46,12 +46,12 @@ const price = await oneCountry.getPriceByName('all')
 
 #### getPriceByName
 ```javascript
-const price = getPriceByName('artem')
+const price = oneCountry.getPriceByName('artem')
 ```
 
 #### getRecordByName
 ```javascript
-const record = getRecordByName('artem')
+const record = oneCountry.getRecordByName('artem')
 ```
 
 #### rent
