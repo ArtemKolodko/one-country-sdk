@@ -42,9 +42,42 @@ const oneCountry = new OneCountry({ provider, contractAddress: '0xE4C0C8241c5D9F
 const price = await oneCountry.getPriceByName('all')
 ```
 
-### OneCountry public methods
+### Usage
 
-#### `getPriceByName(name: string) => Promise<string>`
-#### `getRecordByName(name: string) => Promise<OneCountryRecord>`
-#### `rent(name: string, url: string) => Promise<EthTransaction>`
-#### `updateURL(name: string, url: string) => Promise<EthTransaction>`
+#### getPriceByName
+```javascript
+const name = getPriceByName('artem')
+```
+
+#### getRecordByName
+```javascript
+const record = getRecordByName('artem')
+```
+
+#### rent
+```javascript
+const tx = await oneCountry.rent('artem', 'https://twitter.com/halfin/status/1072874040', '100000000')
+```
+
+#### updateURL
+```javascript
+const tx = await oneCountry.updateURL('artem', 'https://twitter.com/halfin/status/321214052')
+```
+
+#### setNameForRenter
+```javascript
+const tx = await oneCountry.setNameForRenter('artem')
+```
+
+#### getNameForRenter
+```javascript
+// Address param is optional.
+// If oneContry was initialized using Metamask provider or privateKey, user account address will be used by default. 
+const tx = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
+```
+
+### Testing
+
+```javascript
+npm run test
+```

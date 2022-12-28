@@ -88,4 +88,27 @@ export class OneCountry {
         .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }
+
+  public async setNameForRenter (name: string) {
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.setNameForRenter(name).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+        .setNameForRenter(name)
+        .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public async getNameForRenter (address?: string): Promise<string> {
+    const lookupAddress = address || this.accountAddress
+    if(!lookupAddress) {
+      throw new Error('Missing address')
+    }
+    const name = await this.contract.methods
+        .nameOf(lookupAddress)
+        .call()
+    return name
+  }
 }
