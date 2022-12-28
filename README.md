@@ -73,7 +73,7 @@ const tx = await oneCountry.setNameForRenter('artem')
 ```javascript
 // Address param is optional.
 // If oneContry was initialized using Metamask provider or privateKey, user account address will be used by default. 
-const tx = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
+const name = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
 ```
 
 ### Testing
