@@ -1,6 +1,6 @@
 {
   "name": "one-country-sdk",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Package allows easily interact with 1.country domains",
   "exports": {
     ".": {
@@ -68,6 +68,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "bn.js": "^5.2.1",
     "dotenv": "^16.0.3",
     "web3": "^1.8.1"
   }

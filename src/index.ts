@@ -1,10 +1,12 @@
 import Web3 from 'web3'
 import {AbiItem} from 'web3-utils'
 import {Contract} from 'web3-eth-contract';
-import BN from 'bn.js'
-import {abi as ContractAbi} from './abi/d1dc.json'
-import {NullAddress} from "./constants";
+import { BN } from 'bn.js';
+// @ts-ignore
+import d1dc from './abi/d1dc.json';
 import {HttpProvider} from "web3-core";
+
+const NullAddress = '0x0000000000000000000000000000000000000000'
 
 export interface OneCountryConfig {
   contractAddress: string
@@ -22,7 +24,7 @@ export class OneCountry {
 
     this.web3 = new Web3(provider)
     this.contract = new this.web3.eth.Contract(
-        ContractAbi as AbiItem[],
+        d1dc.abi as AbiItem[],
         contractAddress
     );
 
