@@ -3,7 +3,7 @@ import {AbiItem} from 'web3-utils'
 import {Contract} from 'web3-eth-contract';
 import { BN } from 'bn.js';
 // @ts-ignore
-import d1dc from './abi/d1dc.json';
+import d1dcv2 from './abi/d1dcv2.json';
 import {HttpProvider} from "web3-core";
 
 const NullAddress = '0x0000000000000000000000000000000000000000'
@@ -24,7 +24,7 @@ export class OneCountry {
 
     this.web3 = new Web3(provider)
     this.contract = new this.web3.eth.Contract(
-        d1dc.abi as AbiItem[],
+      d1dcv2 as AbiItem[],
         contractAddress
     );
 
@@ -42,8 +42,8 @@ export class OneCountry {
   public async getPriceByName (name: string): Promise<string> {
     const nameBytes = Web3.utils.keccak256(name)
     return await this.contract.methods
-        .getPrice(nameBytes)
-        .call()
+      .getPrice(nameBytes)
+      .call()
   }
 
   public async getRecordByName (name: string) {
@@ -67,14 +67,14 @@ export class OneCountry {
     }
   }
 
-  public async rent (name: string, url: string, price: string) {
+  public async rent (name: string, url: string, price: string, telegram: string, email: string, phone: string) {
     const callObj = { value: price, from: this.accountAddress }
 
     const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.contract.methods.rent(name, url).estimateGas(callObj);
+    const gasEstimate = await this.contract.methods.rent(name, url, telegram, email, phone).estimateGas(callObj);
 
     const tx = await this.contract.methods
-        .rent(name, url)
+        .rent(name, url, telegram, email, phone)
         .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }
