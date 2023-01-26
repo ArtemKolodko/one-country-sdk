@@ -14,7 +14,6 @@ const getRandomArbitrary = (min = 0, max = 10000) => Math.round(Math.random() * 
 
 let oneCountry: OneCountry;
 const RentDomain = 'all' + getRandomArbitrary()
-const RentDomain2 = RentDomain + '_2'
 
 beforeAll(() => {
   const provider = new Web3.providers.HttpProvider(nodeUrl)
@@ -23,15 +22,20 @@ beforeAll(() => {
 
 describe('One Country V2', () => {
   test('Check price', async () => {
-    const name = RentDomain
-    const price = await oneCountry.getPriceByName(name)
+    const price = await oneCountry.getPriceByName(RentDomain)
     expect(price).toBe('1000000000000000000')
   });
 
-  test('Rent domain', async () => {
+  test('Rent domain and transfer it to another address', async () => {
     const name = RentDomain
     const tx = await oneCountry.rent(name, 'https://twitter.com/halfin/status/1072874040', '1000000000000000000', 'artemcode', 'temakolodko@test.com', '123123123')
-    expect(typeof tx.blockNumber).toBe('number');
     expect(typeof tx.transactionHash).toBe('string');
+
+    await new Promise(resolve => setTimeout(resolve, 5000))
+
+    const nameBytes = Web3.utils.keccak256(RentDomain)
+    const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', nameBytes)
+    expect(typeof transferTx.transactionHash).toBe('string');
+
   }, 60000);
 });

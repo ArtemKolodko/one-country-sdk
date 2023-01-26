@@ -17,7 +17,7 @@ export interface OneCountryConfig {
 export class OneCountry {
   private web3: Web3
   private contract: Contract
-  protected accountAddress = ''
+  public accountAddress = ''
 
   constructor(config: OneCountryConfig) {
     const {provider, contractAddress, privateKey} = config
@@ -112,5 +112,17 @@ export class OneCountry {
         .nameOf(lookupAddress)
         .call()
     return name
+  }
+
+  public async safeTransferFrom(from: string, to: string, tokenId: string) {
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.safeTransferFrom(from, to, tokenId).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .safeTransferFrom(from, to, tokenId)
+      .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
   }
 }

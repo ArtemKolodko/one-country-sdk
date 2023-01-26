@@ -1,6 +1,6 @@
 {
   "name": "one-country-sdk",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Package allows easily interact with 1.country domains",
   "exports": {
     ".": {
