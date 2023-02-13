@@ -5,86 +5,92 @@ import {OneCountry} from '../src';
 
 dotenv.config()
 
-// TESTNET https://explorer.pops.one/
-const NODE_URL = 'https://api.s0.b.hmny.io'
-const CONTRACT_ADDRESS = '0x5A7c77B898bd5F554888FEc4AB4c22f52F66Ed24'
-const PRIVATE_KEY = process.env.PRIVATE_KEY || ''
+const privateKey = process.env.PRIVATE_KEY || ''
+
+// Testnet https://explorer.pops.one/
+// const rpcUrl = 'https://api.s0.b.hmny.io'
+// const contractAddress = '0x1018A301Aff4A41e4F190ED2599650358dcC02B8'
+
+// Mainnet
+const rpcUrl = 'https://api.harmony.one'
+const contractAddress = '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA'
+const vanityUrlContractAddress = '0x88a1afC4134f385337Dd5F530D452079fC9E14CC'
+const shortReelsVideosContractAddress = '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D'
 
 const getRandomArbitrary = (min = 0, max = 10000) => Math.round(Math.random() * (max - min) + min);
+const waitTimeout = 10000
 
 let oneCountry: OneCountry;
-const RentDomain = 'all_' + getRandomArbitrary()
-const RentDomain2 = RentDomain + '_2'
+const domainName = 'sdk_test_' + getRandomArbitrary()
+const aliasName = 'sdk_test_alias'
+const linkUrl = 'https://twitter.com/halfin/status/1072874040'
+
+const expectedRentPrice = '100000000000000000000'
+const changeUrlPrice = '1000000000000000000'
 
 beforeAll(() => {
-  const provider = new Web3.providers.HttpProvider(NODE_URL)
-  oneCountry = new OneCountry({ provider, contractAddress: CONTRACT_ADDRESS, privateKey: PRIVATE_KEY })
+  const provider = new Web3.providers.HttpProvider(rpcUrl)
+  oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress, privateKey })
+  console.log('Test account address: ', oneCountry.accountAddress)
 })
 
 describe('One Country', () => {
-  test('Test rental price', async () => {
-    const price = await oneCountry.getPriceByName('test123456')
-    expect(price).toBe('1000000000000000000');
-  });
-
-  test('Check empty record', async () => {
-    const record = await oneCountry.getRecordByName('test' + + getRandomArbitrary())
-    expect(record.renter).toBe(null);
-    expect(record.url).toBe('');
-  });
-
-  test('Check random record', async () => {
-    const record = await oneCountry.getRecordByName('all_' + getRandomArbitrary())
-    expect(record.renter).toBe(null);
-    expect(record.url.length).toBe(0);
-    expect(record.lastPrice.amount).toBe('0');
+  test('Check rental price', async () => {
+    const price = await oneCountry.getPriceByName(domainName)
+    expect(price).toBe(expectedRentPrice)
   });
 
   test('Rent domain', async () => {
-    const name = RentDomain
-    const price = await oneCountry.getPriceByName(name)
-    const tx = await oneCountry.rent(name, 'https://twitter.com/halfin/status/1072874040', price)
-    expect(typeof tx.blockNumber).toBe('number');
+    const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
     expect(typeof tx.transactionHash).toBe('string');
+
+    // await new Promise(resolve => setTimeout(resolve, 5000))
+    //
+    // const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', domainName)
+    // expect(typeof transferTx.transactionHash).toBe('string');
+  }, waitTimeout);
+});
+
+describe('Vanity URL', () => {
+  test('Check url update price', async () => {
+    const price = await oneCountry.getUrlUpdatePrice()
+    expect(price).toBe(changeUrlPrice)
   });
 
-  test('Check rented record', async () => {
-    const record = await oneCountry.getRecordByName(RentDomain)
-    expect(record.renter.length).toBeGreaterThan(0);
-    expect(record.url.length).toBeGreaterThan(0);
-    expect(+record.lastPrice.amount).toBeGreaterThan(0);
+  test('Set new url', async () => {
+    const tx = await oneCountry.setNewURL(domainName, aliasName, linkUrl, +changeUrlPrice)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+
+  test('Get random vanity url price', async () => {
+    const price = await oneCountry.getVanityUrlPrice(domainName, 'test_' + getRandomArbitrary())
+    expect(price).toBe('0')
   });
 
-  test('Change existing url', async () => {
-    const name = RentDomain
-    const tx = await oneCountry.updateURL(name, 'https://twitter.com/halfin/status/321214052')
-    expect(typeof tx.blockNumber).toBe('number');
-    expect(typeof tx.transactionHash).toBe('string');
+  test('Get existet vanity url price', async () => {
+    const price = await oneCountry.getVanityUrlPrice(domainName, aliasName)
+    expect(price).toBe('1')
   });
 
-  test('Rent another domain', async () => {
-    const name = RentDomain2
-    const price = await oneCountry.getPriceByName(name)
-    const tx = await oneCountry.rent(name, 'https://twitter.com/halfin/status/1072874040', price)
-    expect(typeof tx.blockNumber).toBe('number');
-    expect(typeof tx.transactionHash).toBe('string');
-  });
+  test('Pay for vanity url access', async () => {
+    const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
 
-  test('Set reverse name lookup for renter', async () => {
-    const tx = await oneCountry.setNameForRenter(RentDomain2)
-    expect(typeof tx.blockNumber).toBe('number');
-    expect(typeof tx.transactionHash).toBe('string');
-  });
+  test('Send donation for', async () => {
+    const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+});
 
-  test('Check reverse name lookup', async () => {
-    const name = await oneCountry.getNameForRenter()
-    expect(name).toBe(RentDomain2);
-  });
+describe('Short reels videos', () => {
+  test('Pay for vanity url access', async () => {
+    const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
 
-  test('Check reverse name lookup for random address (should be empty)', async () => {
-    const web3 = new Web3()
-    const account = web3.eth.accounts.create()
-    const name = await oneCountry.getNameForRenter(account.address)
-    expect(name).toBe('');
-  });
+  test('Send donation for', async () => {
+    const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
 });
