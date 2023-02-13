@@ -2,14 +2,20 @@ import Web3 from 'web3'
 import {AbiItem} from 'web3-utils'
 import {Contract} from 'web3-eth-contract';
 import { BN } from 'bn.js';
-// @ts-ignore
-import d1dcv2 from './abi/d1dcv2.json';
 import {HttpProvider} from "web3-core";
+// @ts-ignore
+import d1dcv2ABI from './abi/d1dcv2.json';
+// @ts-ignore
+import vanityABI from './abi/vanityUrl.json';
+// @ts-ignore
+import shortReelsVideosABI from './abi/shortReelsVideos.json';
 
 const NullAddress = '0x0000000000000000000000000000000000000000'
 
 export interface OneCountryConfig {
   contractAddress: string
+  vanityUrlContractAddress: string
+  shortReelsVideosContractAddress: string
   provider: HttpProvider
   privateKey?: string // for use on server-side
 }
@@ -17,15 +23,32 @@ export interface OneCountryConfig {
 export class OneCountry {
   private web3: Web3
   private contract: Contract
+  private vanityUrlContract: Contract
+  private shortReelsVideosContract: Contract
   public accountAddress = ''
 
   constructor(config: OneCountryConfig) {
-    const {provider, contractAddress, privateKey} = config
+    const {
+      provider,
+      contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress,
+      privateKey
+    } = config
 
     this.web3 = new Web3(provider)
+
     this.contract = new this.web3.eth.Contract(
-      d1dcv2 as AbiItem[],
+      d1dcv2ABI as AbiItem[],
         contractAddress
+    );
+
+    this.vanityUrlContract = new this.web3.eth.Contract(
+      vanityABI as AbiItem[],
+      vanityUrlContractAddress
+    );
+
+    this.shortReelsVideosContract = new this.web3.eth.Contract(
+      shortReelsVideosABI as AbiItem[],
+      shortReelsVideosContractAddress
     );
 
     if(privateKey) {
@@ -114,8 +137,10 @@ export class OneCountry {
     return name
   }
 
-  public async safeTransferFrom(from: string, to: string, tokenId: string) {
+  public async safeTransferFrom(from: string, to: string, name: string) {
     const callObj = { from: this.accountAddress }
+
+    const tokenId = Web3.utils.keccak256(name)
 
     const gasPrice = await this.web3.eth.getGasPrice();
     const gasEstimate = await this.contract.methods.safeTransferFrom(from, to, tokenId).estimateGas(callObj);
@@ -123,6 +148,58 @@ export class OneCountry {
     const tx = await this.contract.methods
       .safeTransferFrom(from, to, tokenId)
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public getUrlUpdatePrice() {
+    return this.vanityUrlContract.methods.urlUpdatePrice().call()
+  }
+
+  public async getVanityUrlPrice(name: string, alias: string) {
+    const nameBytes = Web3.utils.keccak256(name)
+    const price = await this.vanityUrlContract.methods.vanityURLPrices(nameBytes, alias).call()
+    return price
+  }
+  public async setNewURL (pageName: string, alias: string, url: string, price: number) {
+    const callObj = { from: this.accountAddress, value: price }
+
+    const priceOne = price / Math.pow(10, 18);
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.vanityUrlContract.methods
+      .setNewURL(pageName, alias, url, priceOne)
+      .estimateGas(callObj);
+
+    const tx = await this.vanityUrlContract.methods
+      .setNewURL(pageName, alias, url, priceOne)
+      .send({ ...callObj, gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public async payForVanityURLAccessFor(userAddress: string, name: string, aliasName: string, amount: number, paidAt: number) {
+    const callObj = { from: this.accountAddress, value: amount }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.shortReelsVideosContract.methods
+      .payForVanityURLAccessFor(userAddress, name, aliasName, paidAt)
+      .estimateGas(callObj);
+
+    const tx = await this.shortReelsVideosContract.methods
+      .payForVanityURLAccessFor(userAddress, name, aliasName, paidAt)
+      .send({ ...callObj, gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public async sendDonationFor(userAddress: string, name: string, aliasName: string, amount: number) {
+    const callObj = { from: this.accountAddress, value: amount }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.shortReelsVideosContract.methods
+      .sendDonationFor(userAddress, name, aliasName)
+      .estimateGas(callObj);
+
+    const tx = await this.shortReelsVideosContract.methods
+      .sendDonationFor(userAddress, name, aliasName)
+      .send({ ...callObj, gasPrice, gas: gasEstimate })
     return tx
   }
 }

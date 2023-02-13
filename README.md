@@ -83,3 +83,13 @@ const name = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A
 ```javascript
 npm run test
 ```
+
+#### Testnet contracts
+```javascript
+deploying "NameResolver" (tx: 0xb1b4bb92d898f7dd6ef65f2011ecf539aa2b7068a62fbcd77f4b6210049b69d3)...: deployed at 0xDC797b13Dad4Be96A4bd835232baC6978E1f1a9b with 825365 gas
+deploying "D1DC" (tx: 0x67d8d3513ddc48c90184339d23722c5ebad54bbc9677d214ce484a6561cb1849)...: deployed at 0x1018A301Aff4A41e4F190ED2599650358dcC02B8 with 3202726 gas
+D1DC address: 0x1018A301Aff4A41e4F190ED2599650358dcC02B8
+Set nameResolver manager to d1dc (0x1018A301Aff4A41e4F190ED2599650358dcC02B8)
+Set d1dc default resolver to nameResolver (0xDC797b13Dad4Be96A4bd835232baC6978E1f1a9b)
+D1DC finished initialization
+```

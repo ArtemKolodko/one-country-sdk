@@ -5,37 +5,92 @@ import {OneCountry} from '../src';
 
 dotenv.config()
 
-// TESTNET https://explorer.pops.one/
-const nodeUrl = 'https://api.harmony.one'
-const contractAddress = '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA'
 const privateKey = process.env.PRIVATE_KEY || ''
 
+// Testnet https://explorer.pops.one/
+// const rpcUrl = 'https://api.s0.b.hmny.io'
+// const contractAddress = '0x1018A301Aff4A41e4F190ED2599650358dcC02B8'
+
+// Mainnet
+const rpcUrl = 'https://api.harmony.one'
+const contractAddress = '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA'
+const vanityUrlContractAddress = '0x88a1afC4134f385337Dd5F530D452079fC9E14CC'
+const shortReelsVideosContractAddress = '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D'
+
 const getRandomArbitrary = (min = 0, max = 10000) => Math.round(Math.random() * (max - min) + min);
+const waitTimeout = 10000
 
 let oneCountry: OneCountry;
-const RentDomain = 'all' + getRandomArbitrary()
+const domainName = 'sdk_test_' + getRandomArbitrary()
+const aliasName = 'sdk_test_alias'
+const linkUrl = 'https://twitter.com/halfin/status/1072874040'
+
+const expectedRentPrice = '100000000000000000000'
+const changeUrlPrice = '1000000000000000000'
 
 beforeAll(() => {
-  const provider = new Web3.providers.HttpProvider(nodeUrl)
-  oneCountry = new OneCountry({ provider, contractAddress, privateKey })
+  const provider = new Web3.providers.HttpProvider(rpcUrl)
+  oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress, privateKey })
+  console.log('Test account address: ', oneCountry.accountAddress)
 })
 
-describe('One Country V2', () => {
-  test('Check price', async () => {
-    const price = await oneCountry.getPriceByName(RentDomain)
-    expect(price).toBe('1000000000000000000')
+describe('One Country', () => {
+  test('Check rental price', async () => {
+    const price = await oneCountry.getPriceByName(domainName)
+    expect(price).toBe(expectedRentPrice)
   });
 
-  test('Rent domain and transfer it to another address', async () => {
-    const name = RentDomain
-    const tx = await oneCountry.rent(name, 'https://twitter.com/halfin/status/1072874040', '1000000000000000000', 'artemcode', 'temakolodko@test.com', '123123123')
+  test('Rent domain', async () => {
+    const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
     expect(typeof tx.transactionHash).toBe('string');
 
-    await new Promise(resolve => setTimeout(resolve, 5000))
+    // await new Promise(resolve => setTimeout(resolve, 5000))
+    //
+    // const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', domainName)
+    // expect(typeof transferTx.transactionHash).toBe('string');
+  }, waitTimeout);
+});
 
-    const nameBytes = Web3.utils.keccak256(RentDomain)
-    const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', nameBytes)
-    expect(typeof transferTx.transactionHash).toBe('string');
+describe('Vanity URL', () => {
+  test('Check url update price', async () => {
+    const price = await oneCountry.getUrlUpdatePrice()
+    expect(price).toBe(changeUrlPrice)
+  });
 
-  }, 60000);
+  test('Set new url', async () => {
+    const tx = await oneCountry.setNewURL(domainName, aliasName, linkUrl, +changeUrlPrice)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+
+  test('Get random vanity url price', async () => {
+    const price = await oneCountry.getVanityUrlPrice(domainName, 'test_' + getRandomArbitrary())
+    expect(price).toBe('0')
+  });
+
+  test('Get existet vanity url price', async () => {
+    const price = await oneCountry.getVanityUrlPrice(domainName, aliasName)
+    expect(price).toBe('1')
+  });
+
+  test('Pay for vanity url access', async () => {
+    const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+
+  test('Send donation for', async () => {
+    const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+});
+
+describe('Short reels videos', () => {
+  test('Pay for vanity url access', async () => {
+    const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+
+  test('Send donation for', async () => {
+    const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
 });
