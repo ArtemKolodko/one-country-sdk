@@ -1,6 +1,6 @@
 # one-country-sdk
 
-The web3 library to interact with [http://1.country/](http://1.country/) smart contract
+Web3 library for [1.country](https://1.country/) [smart contract](https://github.com/harmony-one/.1.country) (Harmony One)
 
 ## Installation
 ```shell
