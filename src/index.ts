@@ -14,8 +14,8 @@ const NullAddress = '0x0000000000000000000000000000000000000000'
 
 export interface OneCountryConfig {
   contractAddress: string
-  vanityUrlContractAddress: string
-  shortReelsVideosContractAddress: string
+  vanityUrlContractAddress?: string
+  shortReelsVideosContractAddress?: string
   provider: HttpProvider
   privateKey?: string // for use on server-side
 }
@@ -30,7 +30,9 @@ export class OneCountry {
   constructor(config: OneCountryConfig) {
     const {
       provider,
-      contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress,
+      contractAddress,
+      vanityUrlContractAddress = '',
+      shortReelsVideosContractAddress = '',
       privateKey
     } = config
 
