@@ -87,7 +87,7 @@ const price = await oneCountry.getUrlUpdatePrice()
 
 #### setNewURL
 ```javascript
-const tx = await oneCountry.setNewURL('artem', 'someAlias', 'https://twitter.com', 1000000000000000000)
+const tx = await oneCountry.setNewURL('artem', 'someAlias', 'https://twitter.com', '1000000000000000000')
 ```
 
 #### getVanityUrlPrice
@@ -98,12 +98,12 @@ const price = await oneCountry.getVanityUrlPrice('artem', 'someAlias')
 ### Short reels videos methods:
 #### payForVanityURLAccessFor
 ```javascript
-const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', 1, 12345)
+const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', '1000000000000000000', 12345)
 ```
 
 #### sendDonationFor
 ```javascript
-const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', 1)
+const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', '1000000000000000000')
 ```
 
 ### Testing

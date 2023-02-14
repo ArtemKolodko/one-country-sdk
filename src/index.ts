@@ -162,10 +162,10 @@ export class OneCountry {
     const price = await this.vanityUrlContract.methods.vanityURLPrices(nameBytes, alias).call()
     return (+price * Math.pow(10, 18)).toString()
   }
-  public async setNewURL (pageName: string, alias: string, url: string, price: number) {
-    const callObj = { from: this.accountAddress, value: price }
+  public async setNewURL (pageName: string, alias: string, url: string, price: string) {
+    const callObj = { from: this.accountAddress, value: +price }
 
-    const priceOne = price / Math.pow(10, 18);
+    const priceOne = +price / Math.pow(10, 18);
     const gasPrice = await this.web3.eth.getGasPrice();
     const gasEstimate = await this.vanityUrlContract.methods
       .setNewURL(pageName, alias, url, priceOne)
@@ -177,8 +177,9 @@ export class OneCountry {
     return tx
   }
 
-  public async payForVanityURLAccessFor(userAddress: string, name: string, aliasName: string, amount: number, paidAt: number) {
-    const callObj = { from: this.accountAddress, value: amount }
+  public async payForVanityURLAccessFor(userAddress: string, name: string, aliasName: string, amount: string, paidAt: number) {
+    const value = Math.round(+amount / Math.pow(10, 18))
+    const callObj = { from: this.accountAddress, value }
 
     const gasPrice = await this.web3.eth.getGasPrice();
     const gasEstimate = await this.shortReelsVideosContract.methods
@@ -191,8 +192,9 @@ export class OneCountry {
     return tx
   }
 
-  public async sendDonationFor(userAddress: string, name: string, aliasName: string, amount: number) {
-    const callObj = { from: this.accountAddress, value: amount }
+  public async sendDonationFor(userAddress: string, name: string, aliasName: string, amount: string) {
+    const value = Math.round(+amount / Math.pow(10, 18))
+    const callObj = { from: this.accountAddress, value }
 
     const gasPrice = await this.web3.eth.getGasPrice();
     const gasEstimate = await this.shortReelsVideosContract.methods

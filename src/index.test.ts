@@ -35,27 +35,27 @@ beforeAll(() => {
   console.log('Test account address: ', oneCountry.accountAddress)
 })
 
-// describe('One Country', () => {
-//   test('Check rental price', async () => {
-//     const price = await oneCountry.getPriceByName(domainName)
-//     expect(price).toBe(expectedRentPrice)
-//   });
-//
-//   test('Check record by name', async () => {
-//     const price = await oneCountry.getRecordByName('artem')
-//     expect(price.renter).toContain('0x')
-//   });
-//
-//   test('Rent domain', async () => {
-//     const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
-//     expect(typeof tx.transactionHash).toBe('string');
-//
-//     // await new Promise(resolve => setTimeout(resolve, 5000))
-//     //
-//     // const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', domainName)
-//     // expect(typeof transferTx.transactionHash).toBe('string');
-//   }, waitTimeout);
-// });
+describe('One Country', () => {
+  test('Check rental price', async () => {
+    const price = await oneCountry.getPriceByName(domainName)
+    expect(price).toBe(expectedRentPrice)
+  });
+
+  test('Check record by name', async () => {
+    const price = await oneCountry.getRecordByName('artem')
+    expect(price.renter).toContain('0x')
+  });
+
+  test('Rent domain', async () => {
+    const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
+    expect(typeof tx.transactionHash).toBe('string');
+
+    // await new Promise(resolve => setTimeout(resolve, 5000))
+    //
+    // const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', domainName)
+    // expect(typeof transferTx.transactionHash).toBe('string');
+  }, waitTimeout);
+});
 
 describe('Vanity URL', () => {
   test('Check url update price', async () => {
@@ -64,7 +64,7 @@ describe('Vanity URL', () => {
   });
 
   test('Set new url', async () => {
-    const tx = await oneCountry.setNewURL(domainName, aliasName, linkUrl, +changeUrlPrice)
+    const tx = await oneCountry.setNewURL(domainName, aliasName, linkUrl, changeUrlPrice)
     expect(typeof tx.transactionHash).toBe('string')
   }, waitTimeout);
 
@@ -79,14 +79,14 @@ describe('Vanity URL', () => {
   });
 });
 
-// describe('Short reels videos', () => {
-//   test('Pay for vanity url access', async () => {
-//     const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
-//     expect(typeof tx.transactionHash).toBe('string')
-//   }, waitTimeout);
-//
-//   test('Send donation for', async () => {
-//     const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
-//     expect(typeof tx.transactionHash).toBe('string')
-//   }, waitTimeout);
-// });
+describe('Short reels videos', () => {
+  test('Pay for vanity url access', async () => {
+    const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, vanityUrlPrice, 12345)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+
+  test('Send donation for', async () => {
+    const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, vanityUrlPrice)
+    expect(typeof tx.transactionHash).toBe('string')
+  }, waitTimeout);
+});
