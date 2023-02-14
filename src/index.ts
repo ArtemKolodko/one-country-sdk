@@ -160,7 +160,7 @@ export class OneCountry {
   public async getVanityUrlPrice(name: string, alias: string) {
     const nameBytes = Web3.utils.keccak256(name)
     const price = await this.vanityUrlContract.methods.vanityURLPrices(nameBytes, alias).call()
-    return price
+    return (+price * Math.pow(10, 18)).toString()
   }
   public async setNewURL (pageName: string, alias: string, url: string, price: number) {
     const callObj = { from: this.accountAddress, value: price }

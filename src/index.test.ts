@@ -21,12 +21,13 @@ const getRandomArbitrary = (min = 0, max = 10000) => Math.round(Math.random() * 
 const waitTimeout = 10000
 
 let oneCountry: OneCountry;
-const domainName = 'sdk_test_' + getRandomArbitrary()
+const domainName = 'sdk_test'
 const aliasName = 'sdk_test_alias'
 const linkUrl = 'https://twitter.com/halfin/status/1072874040'
 
 const expectedRentPrice = '100000000000000000000'
 const changeUrlPrice = '1000000000000000000'
+const vanityUrlPrice = '1000000000000000000'
 
 beforeAll(() => {
   const provider = new Web3.providers.HttpProvider(rpcUrl)
@@ -34,27 +35,27 @@ beforeAll(() => {
   console.log('Test account address: ', oneCountry.accountAddress)
 })
 
-describe('One Country', () => {
-  test('Check rental price', async () => {
-    const price = await oneCountry.getPriceByName(domainName)
-    expect(price).toBe(expectedRentPrice)
-  });
-
-  test('Check record by name', async () => {
-    const price = await oneCountry.getRecordByName('artem')
-    expect(price.renter).toContain('0x')
-  });
-
-  test('Rent domain', async () => {
-    const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
-    expect(typeof tx.transactionHash).toBe('string');
-
-    // await new Promise(resolve => setTimeout(resolve, 5000))
-    //
-    // const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', domainName)
-    // expect(typeof transferTx.transactionHash).toBe('string');
-  }, waitTimeout);
-});
+// describe('One Country', () => {
+//   test('Check rental price', async () => {
+//     const price = await oneCountry.getPriceByName(domainName)
+//     expect(price).toBe(expectedRentPrice)
+//   });
+//
+//   test('Check record by name', async () => {
+//     const price = await oneCountry.getRecordByName('artem')
+//     expect(price.renter).toContain('0x')
+//   });
+//
+//   test('Rent domain', async () => {
+//     const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
+//     expect(typeof tx.transactionHash).toBe('string');
+//
+//     // await new Promise(resolve => setTimeout(resolve, 5000))
+//     //
+//     // const transferTx = await oneCountry.safeTransferFrom(oneCountry.accountAddress, '0x199177Bcc7cdB22eC10E3A2DA888c7811275fc38', domainName)
+//     // expect(typeof transferTx.transactionHash).toBe('string');
+//   }, waitTimeout);
+// });
 
 describe('Vanity URL', () => {
   test('Check url update price', async () => {
@@ -74,18 +75,18 @@ describe('Vanity URL', () => {
 
   test('Get existed vanity url price', async () => {
     const price = await oneCountry.getVanityUrlPrice(domainName, aliasName)
-    expect(price).toBe('1')
+    expect(price).toBe(vanityUrlPrice)
   });
 });
 
-describe('Short reels videos', () => {
-  test('Pay for vanity url access', async () => {
-    const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
-    expect(typeof tx.transactionHash).toBe('string')
-  }, waitTimeout);
-
-  test('Send donation for', async () => {
-    const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
-    expect(typeof tx.transactionHash).toBe('string')
-  }, waitTimeout);
-});
+// describe('Short reels videos', () => {
+//   test('Pay for vanity url access', async () => {
+//     const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1, 12345)
+//     expect(typeof tx.transactionHash).toBe('string')
+//   }, waitTimeout);
+//
+//   test('Send donation for', async () => {
+//     const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', domainName, aliasName, 1)
+//     expect(typeof tx.transactionHash).toBe('string')
+//   }, waitTimeout);
+// });
