@@ -1,7 +1,7 @@
 {
   "name": "one-country-sdk",
   "version": "2.0.1",
-  "description": "Library allows to call 1.country contract methods",
+  "description": "One country SDK",
   "exports": {
     ".": {
       "import": {
