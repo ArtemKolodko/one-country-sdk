@@ -14,21 +14,21 @@ import detectEthereumProvider from '@metamask/detect-provider'
 import { OneCountry } from 'one-country-sdk'
 
 const provider = await detectEthereumProvider()
-const oneCountry = new OneCountry({ provider, contractAddress: '0xE4C0C8241c5D9F00459517CC7206b5578eE22083' })
+const oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress })
 
-const [address] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+const [ address ] = await window.ethereum.request({ method: 'eth_requestAccounts' })
 oneCountry.setAccountAddress(address)
 
 const price = await oneCountry.getPriceByName('all')
 ```
 
-### Read only
+### Read only methods
 ```shell
 import Web3 from 'web3'
 import { OneCountry } from 'one-country-sdk'
 
 const provider = new Web3.providers.HttpProvider('https://api.s0.b.hmny.io')
-const oneCountry = new OneCountry({ provider, contractAddress: '0xE4C0C8241c5D9F00459517CC7206b5578eE22083' })
+const oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress })
 const price = await oneCountry.getPriceByName('all')
 ```
 
@@ -38,7 +38,7 @@ import Web3 from 'web3'
 import { OneCountry } from 'one-country-sdk'
 
 const provider = new Web3.providers.HttpProvider('https://api.s0.b.hmny.io')
-const oneCountry = new OneCountry({ provider, contractAddress: '0xE4C0C8241c5D9F00459517CC7206b5578eE22083', privateKey: PRIVATE_KEY })
+const oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress, privateKey: PRIVATE_KEY })
 const price = await oneCountry.getPriceByName('all')
 ```
 
@@ -108,13 +108,10 @@ const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136
 
 ### Testing
 1) Create new `.env` file in root directory, add line with private key
-```shell
+```
 PRIVATE_KEY=12345
 ```
-2) Run test script
-```javascript
-npm run test
-```
+2) Run test script `npm run test`
 
 ### Mainnet contracts
 ```
