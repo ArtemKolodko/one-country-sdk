@@ -1,14 +1,14 @@
-## one-country-sdk
+# one-country-sdk
 
 The web3 library to interact with [http://1.country/](http://1.country/) smart contract
 
-### Installation
+## Installation
 ```shell
 npm i one-country-sdk --save
 ```
 
-### Getting Started
-#### Browser with Metamask
+## Getting Started
+### Using Metamask provider
 ```shell
 import detectEthereumProvider from '@metamask/detect-provider'
 import { OneCountry } from 'one-country-sdk'
@@ -22,7 +22,7 @@ oneCountry.setAccountAddress(address)
 const price = await oneCountry.getPriceByName('all')
 ```
 
-#### Browser - read only
+### Read only
 ```shell
 import Web3 from 'web3'
 import { OneCountry } from 'one-country-sdk'
@@ -32,7 +32,7 @@ const oneCountry = new OneCountry({ provider, contractAddress: '0xE4C0C8241c5D9F
 const price = await oneCountry.getPriceByName('all')
 ```
 
-#### Node.js - read and write
+### Using private key: read and write
 ```shell
 import Web3 from 'web3'
 import { OneCountry } from 'one-country-sdk'
@@ -42,8 +42,9 @@ const oneCountry = new OneCountry({ provider, contractAddress: '0xE4C0C8241c5D9F
 const price = await oneCountry.getPriceByName('all')
 ```
 
-### Usage
+## Usage
 
+### OneCountry methods:
 #### getPriceByName
 ```javascript
 const price = oneCountry.getPriceByName('artem')
@@ -78,18 +79,46 @@ const tx = await oneCountry.setNameForRenter('artem')
 const name = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
 ```
 
-### Testing
+### Vanity URL methods:
+#### getUrlUpdatePrice
+```javascript
+const price = await oneCountry.getUrlUpdatePrice()
+```
 
+#### setNewURL
+```javascript
+const tx = await oneCountry.setNewURL('artem', 'someAlias', 'https://twitter.com', 1000000000000000000)
+```
+
+#### getVanityUrlPrice
+```javascript
+const price = await oneCountry.getVanityUrlPrice('artem', 'someAlias')
+```
+
+### Short reels videos methods:
+#### payForVanityURLAccessFor
+```javascript
+const tx = await oneCountry.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', 1, 12345)
+```
+
+#### sendDonationFor
+```javascript
+const tx = await oneCountry.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', 1)
+```
+
+### Testing
+1) Create new `.env` file in root directory, add line with private key
+```shell
+PRIVATE_KEY=12345
+```
+2) Run test script
 ```javascript
 npm run test
 ```
 
-#### Testnet contracts
-```javascript
-deploying "NameResolver" (tx: 0xb1b4bb92d898f7dd6ef65f2011ecf539aa2b7068a62fbcd77f4b6210049b69d3)...: deployed at 0xDC797b13Dad4Be96A4bd835232baC6978E1f1a9b with 825365 gas
-deploying "D1DC" (tx: 0x67d8d3513ddc48c90184339d23722c5ebad54bbc9677d214ce484a6561cb1849)...: deployed at 0x1018A301Aff4A41e4F190ED2599650358dcC02B8 with 3202726 gas
-D1DC address: 0x1018A301Aff4A41e4F190ED2599650358dcC02B8
-Set nameResolver manager to d1dc (0x1018A301Aff4A41e4F190ED2599650358dcC02B8)
-Set d1dc default resolver to nameResolver (0xDC797b13Dad4Be96A4bd835232baC6978E1f1a9b)
-D1DC finished initialization
+### Mainnet contracts
+```
+ShortsReelsVideo: 0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D
+D1DCV2: 0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA
+VanityURL: 0x88a1afC4134f385337Dd5F530D452079fC9E14CC
 ```
