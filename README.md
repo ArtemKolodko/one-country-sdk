@@ -2,47 +2,54 @@
 
 Web3 library for [1.country](https://1.country/) [smart contract](https://github.com/harmony-one/.1.country) (Harmony One)
 
-## Installation
+## Installing
 ```shell
 npm i one-country-sdk --save
 ```
 
 ## Getting Started
-### Using Metamask provider
+### 1) Using Metamask provider
 ```shell
 import detectEthereumProvider from '@metamask/detect-provider'
 import { OneCountry } from 'one-country-sdk'
 
 const provider = await detectEthereumProvider()
-const oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress })
-
+const oneCountry = new OneCountry({
+  provider,
+  contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
+  vanityUrlContractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC', // optional, required for vanityUrl methods
+  shortReelsVideosContractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D', // optional, required for shortReels methods
+})
 const [ address ] = await window.ethereum.request({ method: 'eth_requestAccounts' })
 oneCountry.setAccountAddress(address)
 
 const price = await oneCountry.getPriceByName('all')
 ```
 
-### Read only methods
+### 2) Using private key (for backend apps)
+```shell
+import Web3 from 'web3'
+import { OneCountry } from 'one-country-sdk'
+
+const oneCountry = new OneCountry({
+  provider: new Web3.providers.HttpProvider('https://api.harmony.one'),
+  contractAddress: '0x...',
+  privateKey: '12345'
+})
+const price = await oneCountry.getPriceByName('all')
+```
+
+### 3) Read only
 ```shell
 import Web3 from 'web3'
 import { OneCountry } from 'one-country-sdk'
 
 const provider = new Web3.providers.HttpProvider('https://api.s0.b.hmny.io')
-const oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress })
+const oneCountry = new OneCountry({ provider, contractAddress: '0x...' })
 const price = await oneCountry.getPriceByName('all')
 ```
 
-### Using private key: read and write
-```shell
-import Web3 from 'web3'
-import { OneCountry } from 'one-country-sdk'
-
-const provider = new Web3.providers.HttpProvider('https://api.s0.b.hmny.io')
-const oneCountry = new OneCountry({ provider, contractAddress, vanityUrlContractAddress, shortReelsVideosContractAddress, privateKey: PRIVATE_KEY })
-const price = await oneCountry.getPriceByName('all')
-```
-
-## Usage
+## Interacting with one-country contracts
 
 ### OneCountry methods:
 #### getPriceByName
@@ -113,9 +120,9 @@ PRIVATE_KEY=12345
 ```
 2) Run test script `npm run test`
 
-### Mainnet contracts
+### Harmony mainnet contracts
 ```
-ShortsReelsVideo: 0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D
-D1DCV2: 0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA
-VanityURL: 0x88a1afC4134f385337Dd5F530D452079fC9E14CC
+  contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
+  vanityUrlContractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC', // optional, required for vanityUrl methods
+  shortReelsVideosContractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D', // optional, required for shortReels methods
 ```
