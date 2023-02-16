@@ -4,11 +4,7 @@ import {Contract} from 'web3-eth-contract';
 import { BN } from 'bn.js';
 import {HttpProvider} from "web3-core";
 // @ts-ignore
-import d1dcv2ABI from './abi/d1dcv2.json';
-// @ts-ignore
-import vanityABI from './abi/vanityUrl.json';
-// @ts-ignore
-import shortReelsVideosABI from './abi/shortReelsVideos.json';
+import d1dcv2ABI from './abi/gateway.json';
 
 export interface GatewayConfig {
   contractAddress: string
