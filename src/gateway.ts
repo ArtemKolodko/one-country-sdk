@@ -50,4 +50,17 @@ export class Gateway {
       .getPrice(name, to)
       .call()
   }
+
+  public async rent(name: string, url: string, secret: string, to: string) {
+    const secretBytes = Web3.utils.keccak256(secret)
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.rent(name, url, secretBytes, to).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .rent(name, url, secretBytes, to)
+      .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
 }
