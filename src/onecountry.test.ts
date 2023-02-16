@@ -2,6 +2,7 @@ import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
 import {OneCountry} from '../src';
+import {getRandomNumber} from "./utils";
 
 dotenv.config()
 
@@ -17,7 +18,6 @@ const contractAddress = '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA'
 const vanityUrlContractAddress = '0x88a1afC4134f385337Dd5F530D452079fC9E14CC'
 const shortReelsVideosContractAddress = '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D'
 
-const getRandomArbitrary = (min = 0, max = 10000) => Math.round(Math.random() * (max - min) + min);
 const waitTimeout = 10000
 
 let oneCountry: OneCountry;
@@ -69,7 +69,7 @@ describe('Vanity URL', () => {
   }, waitTimeout);
 
   test('Get random vanity url price', async () => {
-    const price = await oneCountry.getVanityUrlPrice(domainName, 'test_' + getRandomArbitrary())
+    const price = await oneCountry.getVanityUrlPrice(domainName, 'test_' + getRandomNumber())
     expect(price).toBe('0')
   });
 
