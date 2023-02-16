@@ -1,10 +1,8 @@
 import Web3 from 'web3'
 import {AbiItem} from 'web3-utils'
 import {Contract} from 'web3-eth-contract';
-import { BN } from 'bn.js';
 import {HttpProvider} from "web3-core";
-// @ts-ignore
-import d1dcv2ABI from './abi/gateway.json';
+import { gatewayABI } from './abi';
 
 export interface GatewayConfig {
   contractAddress: string
@@ -32,7 +30,7 @@ export class Gateway {
     this.web3 = new Web3(provider || rpcUrl)
 
     this.contract = new this.web3.eth.Contract(
-      d1dcv2ABI as AbiItem[],
+      gatewayABI as AbiItem[],
       contractAddress
     );
 

@@ -1,7 +1,6 @@
 import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {OneCountry} from '../src';
 import {Gateway} from "./gateway";
 
 dotenv.config()
@@ -10,7 +9,7 @@ const privateKey = process.env.PRIVATE_KEY || ''
 
 // MainNet
 const rpcUrl = 'https://api.harmony.one'
-const contractAddress = '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D'
+const contractAddress = ''
 
 const waitTimeout = 10000
 

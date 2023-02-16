@@ -3,12 +3,7 @@ import {AbiItem} from 'web3-utils'
 import {Contract} from 'web3-eth-contract';
 import { BN } from 'bn.js';
 import {HttpProvider} from "web3-core";
-// @ts-ignore
-import d1dcv2ABI from './abi/d1dcv2.json';
-// @ts-ignore
-import vanityABI from './abi/vanityUrl.json';
-// @ts-ignore
-import shortReelsVideosABI from './abi/shortReelsVideos.json';
+import { d1dcv2ABI, vanityUrlABI, shortReelsVideosABI } from './abi'
 
 const NullAddress = '0x0000000000000000000000000000000000000000'
 
@@ -44,7 +39,7 @@ export class OneCountry {
     );
 
     this.vanityUrlContract = new this.web3.eth.Contract(
-      vanityABI as AbiItem[],
+      vanityUrlABI as AbiItem[],
       vanityUrlContractAddress
     );
 
