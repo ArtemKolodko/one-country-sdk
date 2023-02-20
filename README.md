@@ -26,9 +26,6 @@ const price = await oneCountry.getPriceByName('all')
 
 ### 2) Using private key (for backend apps)
 ```shell
-import Web3 from 'web3'
-import { OneCountry } from 'one-country-sdk'
-
 const oneCountry = new OneCountry({
   provider: new Web3.providers.HttpProvider('https://api.harmony.one'),
   contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
@@ -39,11 +36,7 @@ const price = await oneCountry.getPriceByName('all')
 
 ### 3) No providers, read only
 ```shell
-import Web3 from 'web3'
-import { OneCountry } from 'one-country-sdk'
-
-const provider = new Web3.providers.HttpProvider('https://api.s0.b.hmny.io')
-const oneCountry = new OneCountry({ provider, contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA' })
+const oneCountry = new OneCountry({ contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA' })
 const price = await oneCountry.getPriceByName('all')
 ```
 
