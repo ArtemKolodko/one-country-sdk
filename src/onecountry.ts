@@ -4,8 +4,11 @@ import { BN } from 'bn.js';
 import { d1dcv2ABI } from './abi'
 import {NullAddress} from "./index";
 import {OneCountryBase, OneCountryConfig} from "./oneCountryBase";
+import {Contract} from "web3-eth-contract";
 
 export default class OneCountry extends OneCountryBase {
+  protected contract: Contract
+
   constructor(config: OneCountryConfig) {
     super(config)
     this.contract = new this.web3.eth.Contract(

@@ -2,8 +2,11 @@ import Web3 from 'web3'
 import {AbiItem} from 'web3-utils'
 import { vanityUrlABI } from './abi'
 import {OneCountryBase, OneCountryConfig} from "./oneCountryBase";
+import {Contract} from "web3-eth-contract";
 
 export default class VanityUrl extends OneCountryBase {
+  protected contract: Contract
+
   constructor(config: OneCountryConfig) {
     super(config);
     this.contract = new this.web3.eth.Contract(

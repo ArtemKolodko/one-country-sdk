@@ -1,8 +1,11 @@
 import {AbiItem} from 'web3-utils'
 import { shortReelsVideosABI } from './abi'
 import {OneCountryBase, OneCountryConfig} from "./oneCountryBase";
+import {Contract} from "web3-eth-contract";
 
 export default class ShortReelsVideos extends OneCountryBase {
+  protected contract: Contract
+
   constructor(config: OneCountryConfig) {
     super(config)
     this.contract = new this.web3.eth.Contract(

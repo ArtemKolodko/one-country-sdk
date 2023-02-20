@@ -11,7 +11,6 @@ export interface OneCountryConfig {
 
 export class OneCountryBase {
   protected web3: Web3
-  protected contract: Contract
   public accountAddress = ''
 
   constructor(config: OneCountryConfig) {
