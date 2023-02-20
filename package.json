@@ -1,7 +1,7 @@
 {
   "name": "one-country-sdk",
-  "version": "2.0.4",
-  "description": "One country SDK",
+  "version": "2.1.0",
+  "description": "One Country SDK",
   "exports": {
     ".": {
       "import": {
@@ -24,7 +24,7 @@
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p ./configs/tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
     "build:cjs": "tsc -p ./configs/tsconfig.cjs.json",
-    "test": "jest gateway.test.ts",
+    "test": "jest vanityUrl.test.ts",
     "prepack": "npm run build"
   },
   "release": {

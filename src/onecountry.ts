@@ -1,58 +1,17 @@
 import Web3 from 'web3'
 import {AbiItem} from 'web3-utils'
-import {Contract} from 'web3-eth-contract';
 import { BN } from 'bn.js';
-import {HttpProvider} from "web3-core";
-import { d1dcv2ABI, vanityUrlABI, shortReelsVideosABI } from './abi'
+import { d1dcv2ABI } from './abi'
+import {NullAddress} from "./index";
+import {OneCountryBase, OneCountryConfig} from "./oneCountryBase";
 
-const NullAddress = '0x0000000000000000000000000000000000000000'
-
-export interface OneCountryConfig {
-  contractAddress: string
-  vanityUrlContractAddress?: string
-  shortReelsVideosContractAddress?: string
-  provider: HttpProvider
-  privateKey?: string // for use on server-side
-}
-
-export class OneCountry {
-  private web3: Web3
-  private contract: Contract
-  private vanityUrlContract: Contract
-  private shortReelsVideosContract: Contract
-  public accountAddress = ''
-
+export default class OneCountry extends OneCountryBase {
   constructor(config: OneCountryConfig) {
-    const {
-      provider,
-      contractAddress,
-      vanityUrlContractAddress = '',
-      shortReelsVideosContractAddress = '',
-      privateKey
-    } = config
-
-    this.web3 = new Web3(provider)
-
+    super(config)
     this.contract = new this.web3.eth.Contract(
       d1dcv2ABI as AbiItem[],
-      contractAddress
+      config.contractAddress
     );
-
-    this.vanityUrlContract = new this.web3.eth.Contract(
-      vanityUrlABI as AbiItem[],
-      vanityUrlContractAddress
-    );
-
-    this.shortReelsVideosContract = new this.web3.eth.Contract(
-      shortReelsVideosABI as AbiItem[],
-      shortReelsVideosContractAddress
-    );
-
-    if(privateKey) {
-      const account = this.web3.eth.accounts.privateKeyToAccount(privateKey);
-      this.web3.eth.accounts.wallet.add(account);
-      this.setAccountAddress(account.address)
-    }
   }
 
   public setAccountAddress (address: string) {
@@ -123,17 +82,6 @@ export class OneCountry {
     return tx
   }
 
-  public async getNameForRenter (address?: string): Promise<string> {
-    const lookupAddress = address || this.accountAddress
-    if(!lookupAddress) {
-      throw new Error('Missing address')
-    }
-    const name = await this.contract.methods
-      .nameOf(lookupAddress)
-      .call()
-    return name
-  }
-
   public async safeTransferFrom(from: string, to: string, name: string) {
     const callObj = { from: this.accountAddress }
 
@@ -145,60 +93,6 @@ export class OneCountry {
     const tx = await this.contract.methods
       .safeTransferFrom(from, to, tokenId)
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
-    return tx
-  }
-
-  public getUrlUpdatePrice() {
-    return this.vanityUrlContract.methods.urlUpdatePrice().call()
-  }
-
-  public async getVanityUrlPrice(name: string, alias: string) {
-    const nameBytes = Web3.utils.keccak256(name)
-    const price = await this.vanityUrlContract.methods.vanityURLPrices(nameBytes, alias).call()
-    return (+price * Math.pow(10, 18)).toString()
-  }
-  public async setNewURL (pageName: string, alias: string, url: string, price: string) {
-    const callObj = { from: this.accountAddress, value: +price }
-
-    const priceOne = +price / Math.pow(10, 18);
-    const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.vanityUrlContract.methods
-      .setNewURL(pageName, alias, url, priceOne)
-      .estimateGas(callObj);
-
-    const tx = await this.vanityUrlContract.methods
-      .setNewURL(pageName, alias, url, priceOne)
-      .send({ ...callObj, gasPrice, gas: gasEstimate })
-    return tx
-  }
-
-  public async payForVanityURLAccessFor(userAddress: string, name: string, aliasName: string, amount: string, paidAt: number) {
-    const value = Math.round(+amount / Math.pow(10, 18))
-    const callObj = { from: this.accountAddress, value }
-
-    const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.shortReelsVideosContract.methods
-      .payForVanityURLAccessFor(userAddress, name, aliasName, paidAt)
-      .estimateGas(callObj);
-
-    const tx = await this.shortReelsVideosContract.methods
-      .payForVanityURLAccessFor(userAddress, name, aliasName, paidAt)
-      .send({ ...callObj, gasPrice, gas: gasEstimate })
-    return tx
-  }
-
-  public async sendDonationFor(userAddress: string, name: string, aliasName: string, amount: string) {
-    const value = Math.round(+amount / Math.pow(10, 18))
-    const callObj = { from: this.accountAddress, value }
-
-    const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.shortReelsVideosContract.methods
-      .sendDonationFor(userAddress, name, aliasName)
-      .estimateGas(callObj);
-
-    const tx = await this.shortReelsVideosContract.methods
-      .sendDonationFor(userAddress, name, aliasName)
-      .send({ ...callObj, gasPrice, gas: gasEstimate })
     return tx
   }
 }
