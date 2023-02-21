@@ -16,7 +16,7 @@ import { OneCountry } from 'one-country-sdk'
 const provider = await detectEthereumProvider()
 const oneCountry = new OneCountry({
   provider,
-  contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2'
+  contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA'
 })
 const [ address ] = await window.ethereum.request({ method: 'eth_requestAccounts' })
 oneCountry.setAccountAddress(address)
@@ -27,7 +27,7 @@ const price = await oneCountry.getPriceByName('all')
 ### 2) Using private key (for backend apps)
 ```shell
 const oneCountry = new OneCountry({
-  contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2',
+  contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
   privateKey: '12345'
 })
 const price = await oneCountry.getPriceByName('all')
@@ -35,14 +35,14 @@ const price = await oneCountry.getPriceByName('all')
 
 ### 3) No providers, read only
 ```shell
-const oneCountry = new OneCountry({ contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2' })
+const oneCountry = new OneCountry({ contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA' })
 const price = await oneCountry.getPriceByName('all')
 ```
 
 ## Configuration
 ```shell
 const provider = await detectEthereumProvider()
-const oneCountry = new OneCountry({ provider, contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2' })
+const oneCountry = new OneCountry({ provider, contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA' })
 const vanityUrl = new VanityUrl({ provider, contractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC' })
 const shortVideos = new ShortReelsVideos({ provider, contractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D' })
 ```
@@ -61,7 +61,7 @@ export interface OneCountryConfig {
 #### Init
 ```shell
 const provider = await detectEthereumProvider()
-const oneCountry = new OneCountry({ contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2', provider })
+const oneCountry = new OneCountry({ contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA', provider })
 ```
 
 #### getPriceByName
@@ -141,7 +141,7 @@ PRIVATE_KEY=12345
 
 ### Harmony mainnet contracts
 ```
-  contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2',
+  oneCountry: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
   vanityUrlContractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC',
   shortReelsVideosContractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D',
 ```

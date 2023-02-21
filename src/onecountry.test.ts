@@ -1,4 +1,3 @@
-import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
 import {getRandomNumber, OneCountry} from '../src';
@@ -15,7 +14,7 @@ const waitTimeout = 10000
 const expectedRentPrice = '100000000000000000000'
 
 beforeAll(() => {
-  oneCountry = new OneCountry({ contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2', privateKey })
+  oneCountry = new OneCountry({ contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA', privateKey })
   console.log('Test account address: ', oneCountry.accountAddress)
 })
 
@@ -30,7 +29,7 @@ describe('One Country', () => {
     expect(record.renter).toContain('0x')
   });
 
-  test('Register domain', async () => {
+  test('Rent domain', async () => {
     const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
     expect(typeof tx.transactionHash).toBe('string');
 

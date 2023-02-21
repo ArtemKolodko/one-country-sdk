@@ -1,7 +1,7 @@
 import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {Gateway} from "./gateway";
+import {Gateway} from "./";
 
 dotenv.config()
 

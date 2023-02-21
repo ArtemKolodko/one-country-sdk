@@ -123,10 +123,10 @@ export class OneCountry extends OneCountryBase {
     const callObj = { value: price, from: this.accountAddress }
 
     const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.contract.methods.rent(name, url, telegram, email, phone).estimateGas(callObj);
+    const gasEstimate = await this.contract.methods.rent(url, url, telegram, email, phone).estimateGas(callObj);
 
     const tx = await this.contract.methods
-      .register(name, url, telegram, email, phone)
+      .rent(url, url, telegram, email, phone)
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }
@@ -212,7 +212,7 @@ export class ShortReelsVideos extends OneCountryBase {
   }
 }
 
-export default class VanityUrl extends OneCountryBase {
+export class VanityUrl extends OneCountryBase {
   protected contract: Contract
 
   constructor(config: OneCountryConfig) {
