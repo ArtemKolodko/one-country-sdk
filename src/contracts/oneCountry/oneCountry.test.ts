@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {getRandomNumber, OneCountry} from '../src';
+import {getRandomNumber} from '../../base';
+import { OneCountry } from './index'
 
 dotenv.config()
 
