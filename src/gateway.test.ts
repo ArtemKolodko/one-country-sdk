@@ -6,18 +6,13 @@ import {Gateway} from "./gateway";
 dotenv.config()
 
 const privateKey = process.env.PRIVATE_KEY || ''
-
-// MainNet
-const rpcUrl = 'https://api.harmony.one'
 const contractAddress = ''
-
 const waitTimeout = 10000
 
 let gateway: Gateway;
 
 beforeAll(() => {
-  const provider = new Web3.providers.HttpProvider(rpcUrl)
-  gateway = new Gateway({ provider, contractAddress, privateKey })
+  gateway = new Gateway({ contractAddress, privateKey })
   console.log('Test account address: ', gateway.accountAddress)
 })
 

@@ -1,21 +1,21 @@
 import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {OneCountry} from '../src';
+import {getRandomNumber, OneCountry} from '../src';
 
 dotenv.config()
 
 const privateKey = process.env.PRIVATE_KEY || ''
 
 let oneCountry: OneCountry;
-const domainName = 'sdk_test'
+const domainName = 'sdk_test' + getRandomNumber()
 const aliasName = 'sdk_test_alias'
 const linkUrl = 'https://twitter.com/halfin/status/1072874040'
 const waitTimeout = 10000
 const expectedRentPrice = '100000000000000000000'
 
 beforeAll(() => {
-  oneCountry = new OneCountry({ contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA', privateKey })
+  oneCountry = new OneCountry({ contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2', privateKey })
   console.log('Test account address: ', oneCountry.accountAddress)
 })
 
@@ -25,12 +25,12 @@ describe('One Country', () => {
     expect(price).toBe(expectedRentPrice)
   });
 
-  test('Check record by name', async () => {
-    const price = await oneCountry.getRecordByName('artem')
-    expect(price.renter).toContain('0x')
+  test('Get record by name', async () => {
+    const record = await oneCountry.getRecordByName('artem')
+    expect(record.renter).toContain('0x')
   });
 
-  test('Rent domain', async () => {
+  test('Register domain', async () => {
     const tx = await oneCountry.rent(domainName, linkUrl, expectedRentPrice, 'test_telegram', 'testemail@test.com', '123123123')
     expect(typeof tx.transactionHash).toBe('string');
 
