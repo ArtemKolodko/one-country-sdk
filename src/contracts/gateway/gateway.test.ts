@@ -1,7 +1,6 @@
-import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {Gateway} from "./";
+import {Gateway} from "./index";
 
 dotenv.config()
 
@@ -20,5 +19,5 @@ describe('Gateway', () => {
   test('Check rental price', async () => {
     const price = await gateway.getPrice('artem', '0x95D02e967Dd2D2B1839347e0B84E59136b11A073')
     expect(price).toBe('100000000000000000000')
-  });
+  }, waitTimeout);
 });

@@ -108,3 +108,4 @@ dist
 lib
 *.tgz
 .idea
+.parcel-cache

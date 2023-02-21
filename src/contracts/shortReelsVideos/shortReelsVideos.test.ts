@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import { ShortReelsVideos } from "./";
+import { ShortReelsVideos } from "./index";
 
 dotenv.config()
 
