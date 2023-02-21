@@ -1,9 +1,8 @@
 import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {OneCountry} from '../src';
 import {getRandomNumber} from "./";
-import VanityUrl from "./vanityUrl";
+import { VanityUrl } from "./";
 
 dotenv.config()
 

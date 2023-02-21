@@ -27,7 +27,6 @@ const price = await oneCountry.getPriceByName('all')
 ### 2) Using private key (for backend apps)
 ```shell
 const oneCountry = new OneCountry({
-  provider: new Web3.providers.HttpProvider('https://api.harmony.one'),
   contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
   privateKey: '12345'
 })
@@ -41,12 +40,21 @@ const price = await oneCountry.getPriceByName('all')
 ```
 
 ## Configuration
-Library support one country, vanity url and short reels videos contracts.
 ```shell
 const provider = await detectEthereumProvider()
 const oneCountry = new OneCountry({ provider, contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA' })
 const vanityUrl = new VanityUrl({ provider, contractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC' })
 const shortVideos = new ShortReelsVideos({ provider, contractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D' })
+```
+
+### Options
+```shell
+export interface OneCountryConfig {
+  contractAddress: string;
+  provider?: HttpProvider;
+  rpcUrl?: string;
+  privateKey?: string
+}
 ```
 
 ### OneCountry
@@ -79,14 +87,11 @@ const tx = await oneCountry.updateURL('artem', 'https://twitter.com/halfin/statu
 
 #### setNameForRenter
 ```javascript
-// Assign provided name with account address
 const tx = await oneCountry.setNameForRenter('artem')
 ```
 
 #### getNameForRenter
 ```javascript
-// Address param is optional
-// If oneContry was initialized using Metamask provider or privateKey, user account address will be used by default. 
 const name = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
 ```
 
@@ -136,7 +141,7 @@ PRIVATE_KEY=12345
 
 ### Harmony mainnet contracts
 ```
-  contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
+  oneCountry: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA',
   vanityUrlContractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC',
   shortReelsVideosContractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D',
 ```

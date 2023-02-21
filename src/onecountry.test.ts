@@ -1,14 +1,13 @@
-import Web3 from 'web3'
 import * as dotenv from 'dotenv'
 import {describe, expect, test} from '@jest/globals';
-import {OneCountry} from '../src';
+import {getRandomNumber, OneCountry} from '../src';
 
 dotenv.config()
 
 const privateKey = process.env.PRIVATE_KEY || ''
 
 let oneCountry: OneCountry;
-const domainName = 'sdk_test'
+const domainName = 'sdk_test' + getRandomNumber()
 const aliasName = 'sdk_test_alias'
 const linkUrl = 'https://twitter.com/halfin/status/1072874040'
 const waitTimeout = 10000
@@ -25,9 +24,9 @@ describe('One Country', () => {
     expect(price).toBe(expectedRentPrice)
   });
 
-  test('Check record by name', async () => {
-    const price = await oneCountry.getRecordByName('artem')
-    expect(price.renter).toContain('0x')
+  test('Get record by name', async () => {
+    const record = await oneCountry.getRecordByName('artem')
+    expect(record.renter).toContain('0x')
   });
 
   test('Rent domain', async () => {
