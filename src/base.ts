@@ -1,5 +1,6 @@
 import {HttpProvider} from "web3-core";
 import Web3 from "web3";
+
 export interface OneCountryConfig {
   contractAddress: string;
   provider?: HttpProvider;
@@ -9,10 +10,12 @@ export interface OneCountryConfig {
 
 export class OneCountryBase {
   protected web3: Web3
-  public accountAddress = ''
+  public accountAddress: string
 
   constructor(config: OneCountryConfig) {
     const { privateKey } = config
+
+    this.accountAddress = ''
 
     const rpcUrl = config.rpcUrl || 'https://api.harmony.one'
     const provider = config.provider || new Web3.providers.HttpProvider(rpcUrl)

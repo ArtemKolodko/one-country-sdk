@@ -1,1 +1,1 @@
-export { OneCountry, Gateway, ShortReelsVideos, VanityUrl } from './contracts/'
+export { OneCountry, Gateway, ShortReelsVideos, VanityUrl, DC } from './contracts/'
