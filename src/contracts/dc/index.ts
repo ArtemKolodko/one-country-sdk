@@ -59,7 +59,9 @@ export class DC extends OneCountryBase {
     const callObj = { from: this.accountAddress, value: amount }
 
     const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.contract.methods.register(name, url, secretHash).estimateGas(callObj);
+    const gasEstimate = await this.contract.methods
+      .register(name, url, secretHash)
+      .estimateGas(callObj);
 
     const tx = await this.contract.methods
       .register(name, url, secretHash)
@@ -67,15 +69,34 @@ export class DC extends OneCountryBase {
     return tx
   }
 
-  public async commit(name: string, secret: string, amount: string) {
-    const secretHash = Web3.utils.keccak256(secret)
-    const callObj = { from: this.accountAddress }
+  public async renew(name: string, url: string, amount: string) {
+    const callObj = { from: this.accountAddress, value: amount }
 
     const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.contract.methods.commit(name, secretHash).estimateGas(callObj);
+    const gasEstimate = await this.contract.methods
+      .renew(name, url)
+      .estimateGas(callObj);
 
     const tx = await this.contract.methods
-      .commit(name, secretHash)
+      .renew(name, url)
+      .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public getReinstateCost(name: string) {
+    return this.contract.methods.getReinstateCost(name).call()
+  }
+
+  public async reinstate(name: string, amount: string) {
+    const callObj = { from: this.accountAddress, value: amount }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods
+      .reinstate(name)
+      .estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .reinstate(name)
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }
@@ -88,6 +109,60 @@ export class DC extends OneCountryBase {
 
     const tx = await this.contract.methods
       .updateURL(name, url)
+      .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public async addURL(name: string, url: string) {
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.addURL(name, url).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .addURL(name, url).send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public getNumUrls(name: string) {
+    return this.contract.methods.numUrls(name).call()
+  }
+
+  public async removeUrl(name: string, pos: number) {
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.removeUrl(name, pos).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .removeUrl(name, pos).send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public async clearUrls(name: string, pos: number) {
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.clearUrls(name, pos).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .clearUrls(name, pos).send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public getAllUrls(name: string) {
+    return this.contract.methods.getAllUrls(name).call()
+  }
+
+  public async commit(name: string, secret: string, amount: string) {
+    const secretHash = Web3.utils.keccak256(secret)
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.commit(name, secretHash).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .commit(name, secretHash)
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }

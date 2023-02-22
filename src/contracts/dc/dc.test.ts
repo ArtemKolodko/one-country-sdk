@@ -28,4 +28,19 @@ describe('DC', () => {
     expect(typeof params.duration).toBe('number')
     expect(typeof params.lastRented).toBe('string')
   }, waitTimeout);
+
+  test('Get reinstate cost', async () => {
+    const cost = await dc.getReinstateCost('artem')
+    expect(+cost).toBeGreaterThanOrEqual(0)
+  });
+
+  test('Reinstate', async () => {
+    const tx = await dc.reinstate('artem', '10000')
+    expect(tx.transactionHash).toContain('0x')
+  }, waitTimeout);
+
+  test('Get num urls', async () => {
+    const num = await dc.getNumUrls('artem')
+    expect(+num).toBeGreaterThanOrEqual(0)
+  }, waitTimeout);
 });
