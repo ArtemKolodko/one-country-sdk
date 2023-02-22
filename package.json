@@ -10,7 +10,7 @@
     "clean": "rm -rf ./lib",
     "watch": "parcel watch",
     "build": "npm run clean && parcel build",
-    "test": "jest vanityUrl.test.ts --no-cache",
+    "test": "jest dc.test.ts --no-cache",
     "prepack": "npm run build"
   },
   "release": {
