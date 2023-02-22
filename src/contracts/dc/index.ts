@@ -1,4 +1,4 @@
-import {OneCountryBase, OneCountryConfig} from "../../base";
+import {NullAddress, OneCountryBase, OneCountryConfig} from "../../base";
 import {Contract} from "web3-eth-contract";
 import {AbiItem} from "web3-utils";
 import Web3 from "web3";
@@ -14,6 +14,10 @@ export class DC extends OneCountryBase {
       ABI as AbiItem[],
       config.contractAddress
     );
+  }
+
+  public isAvailable(name: string) {
+    return this.contract.methods.available(name).call()
   }
 
   public getBaseRentalPrice() {
@@ -51,6 +55,24 @@ export class DC extends OneCountryBase {
     return {
       amount,
       formatted: this.web3.utils.fromWei(amount)
+    }
+  }
+
+  public async getRecord(name: string) {
+    const nameBytes = this.web3.utils.keccak256(name)
+    const result = await this.contract.methods.nameRecords(nameBytes).call()
+    const [renter, rentTime, expirationTime, lastPrice, url, prev, next] = Object.keys(result).map(k => result[k])
+    return {
+      renter: renter === NullAddress ? null : renter,
+      rentTime: new BN(rentTime).toNumber() * 1000,
+      expirationTime: new BN(expirationTime).toNumber() * 1000,
+      lastPrice: {
+        amount: lastPrice,
+        formatted: this.web3.utils.fromWei(lastPrice)
+      },
+      url,
+      prev,
+      next
     }
   }
 

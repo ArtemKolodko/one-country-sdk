@@ -16,6 +16,16 @@ beforeAll(() => {
 })
 
 describe('DC', () => {
+  test('Is name available', async () => {
+    const isAvailable = await dc.isAvailable('artem')
+    expect(isAvailable).toBe(false)
+  }, waitTimeout);
+
+  test('Get record', async () => {
+    const record = await dc.getRecord('artem')
+    expect(record.renter).toContain('0x')
+  }, waitTimeout);
+
   test('Get price', async () => {
     const price = await dc.getPrice('artem123')
     expect(typeof price.amount).toBe('string')
