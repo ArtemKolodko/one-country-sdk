@@ -176,15 +176,28 @@ export class DC extends OneCountryBase {
     return this.contract.methods.getAllUrls(name).call()
   }
 
-  public async commit(name: string, secret: string, amount: string) {
+  public async commit(commitment: string) {
+    const commitmentHash = Web3.utils.keccak256(commitment)
+    const callObj = { from: this.accountAddress }
+
+    const gasPrice = await this.web3.eth.getGasPrice();
+    const gasEstimate = await this.contract.methods.commit(commitmentHash).estimateGas(callObj);
+
+    const tx = await this.contract.methods
+      .commit(commitmentHash)
+      .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
+    return tx
+  }
+
+  public async makeCommitment(name: string, secret: string) {
     const secretHash = Web3.utils.keccak256(secret)
     const callObj = { from: this.accountAddress }
 
     const gasPrice = await this.web3.eth.getGasPrice();
-    const gasEstimate = await this.contract.methods.commit(name, secretHash).estimateGas(callObj);
+    const gasEstimate = await this.contract.methods.makeCommitment(name, secretHash).estimateGas(callObj);
 
     const tx = await this.contract.methods
-      .commit(name, secretHash)
+      .makeCommitment(name, secretHash)
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }
