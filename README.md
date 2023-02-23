@@ -1,7 +1,13 @@
 # one-country-sdk
 
-Web3 library for [1.country](https://1.country/) [smart contract](https://github.com/harmony-one/.1.country) (Harmony One)
+Web3 library for [1.country](https://1.country/) smart contracts.
 
+Supported contracts:
+- [OneCountry](https://github.com/harmony-one/.1.country/blob/v1.1/contracts/contracts/D1DCV2.sol)
+- [VanityUrl](https://github.com/harmony-one/.1.country/blob/v1.1/contracts/contracts/VanityURL.sol)
+- [ShortReelsVideos](https://github.com/harmony-one/shorts-reels-videos-contract/blob/main/contracts/ShortsReelsVideos.sol)
+- [DC](https://github.com/harmony-one/dot-country/blob/main/contracts/contracts/DC.sol)
+- [Gateway](https://github.com/harmony-one/dot-country/blob/gateway/contracts/contracts/Gateway.sol) (WIP)
 ## Installing
 ```shell
 npm i one-country-sdk --save
@@ -60,7 +66,7 @@ const dc = new DC({ provider, contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f
 | privateKey?     | `undefined`               | Private key, optional. Use only on backend side. |
 
 ## API
-### OneCountry ([source code](https://github.com/harmony-one/.1.country/blob/v1.1/contracts/contracts/D1DCV2.sol))
+### OneCountry
 ```javascript
 const price = oneCountry.getPriceByName('artem')
 ```
@@ -81,7 +87,7 @@ const tx = await oneCountry.setNameForRenter('artem')
 const name = await oneCountry.getNameForRenter('0x726A7a5403c9C1F49f72789794358A2FfdacCA85')
 ```
 
-### Vanity URL ([source code](https://github.com/harmony-one/.1.country/blob/v1.1/contracts/contracts/VanityURL.sol))
+### Vanity URL
 ```javascript
 const price = await vanityUrl.getUrlUpdatePrice()
 ```
@@ -92,7 +98,7 @@ const tx = await vanityUrl.setNewURL('artem', 'someAlias', 'https://twitter.com'
 const price = await vanityUrl.getVanityUrlPrice('artem', 'someAlias')
 ```
 
-### Short Reels Videos ([source code](https://github.com/harmony-one/shorts-reels-videos-contract/blob/main/contracts/ShortsReelsVideos.sol))
+### Short Reels Videos
 ```javascript
 const tx = await shortReelsVideos.payForVanityURLAccessFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', '1000000000000000000', 12345)
 ```
@@ -100,7 +106,7 @@ const tx = await shortReelsVideos.payForVanityURLAccessFor('0x95D02e967Dd2D2B183
 const tx = await shortReelsVideos.sendDonationFor('0x95D02e967Dd2D2B1839347e0B84E59136b11A073', 'artem', 'someAlias', '1000000000000000000')
 ```
 
-### DC ([source code](https://github.com/harmony-one/dot-country/blob/main/contracts/contracts/DC.sol))
+### DC
 ```javascript
 const isAvailable = await dc.isAvailable('artem')
 ```

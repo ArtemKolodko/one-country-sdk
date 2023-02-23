@@ -1,6 +1,6 @@
 {
   "name": "one-country-sdk",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "One Country SDK",
   "source": "src/index.ts",
   "main": "lib/main.js",
