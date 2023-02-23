@@ -20,6 +20,14 @@ export class VanityUrl extends OneCountryBase {
     return this.contract.methods.urlUpdatePrice().call()
   }
 
+  public getNameOwner(name: string): Promise<string> {
+    return this.contract.methods.getNameOwner(name).call()
+  }
+
+  public getAddressRegistry(): Promise<string> {
+    return this.contract.methods.addressRegistry().call()
+  }
+
   public async getVanityUrlPrice(name: string, alias: string) {
     const nameBytes = Web3.utils.keccak256(name)
     const price = await this.contract.methods.vanityURLPrices(nameBytes, alias).call()
