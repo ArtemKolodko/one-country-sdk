@@ -42,4 +42,14 @@ describe('Vanity URL', () => {
     const price = await vanityUrl.getVanityUrlPrice(domainName, aliasName)
     expect(price).toBe(vanityUrlPrice)
   });
+
+  test('should return owner address', async () => {
+    const address = await vanityUrl.getNameOwner(domainName)
+    expect(typeof address).toBe('string')
+  });
+
+  test('should return registry address', async () => {
+    const address = await vanityUrl.getAddressRegistry()
+    expect(typeof address).toBe('string')
+  });
 });

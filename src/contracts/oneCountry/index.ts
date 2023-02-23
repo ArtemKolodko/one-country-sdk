@@ -98,4 +98,12 @@ export class OneCountry extends OneCountryBase {
       .send({ ...callObj, gasPrice: gasPrice, gas: gasEstimate })
     return tx
   }
+
+  public getBaseRegistrar(): Promise<string> {
+    return this.contract.methods.baseRegistrar().call()
+  }
+
+  public getRegistrarController(): Promise<string> {
+    return this.contract.methods.registrarController().call()
+  }
 }
