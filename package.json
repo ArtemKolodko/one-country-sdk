@@ -1,6 +1,6 @@
 {
   "name": "one-country-sdk",
-  "version": "3.1.4",
+  "version": "3.2.0",
   "description": "One Country SDK",
   "source": "src/index.ts",
   "main": "lib/main.js",
@@ -8,7 +8,6 @@
   "types": "lib/types.d.ts",
   "targets": {
     "defailt": {
-      "isLibrary": true,
       "distDir": "./lib"
     }
   },
@@ -16,7 +15,7 @@
     "clean": "rm -rf ./lib",
     "watch": "parcel watch",
     "build": "npm run clean && parcel build",
-    "test": "jest dc.test.ts --no-cache",
+    "test": "jest dc-ens.test.ts --no-cache",
     "prepack": "npm run build"
   },
   "release": {

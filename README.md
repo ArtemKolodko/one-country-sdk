@@ -8,6 +8,7 @@ Supported contracts:
 - [ShortReelsVideos](https://github.com/harmony-one/shorts-reels-videos-contract/blob/main/contracts/ShortsReelsVideos.sol)
 - [DC](https://github.com/harmony-one/dot-country/blob/main/contracts/contracts/DC.sol)
 - [Gateway](https://github.com/harmony-one/dot-country/blob/gateway/contracts/contracts/Gateway.sol) (WIP)
+- [DC-ENS](https://github.com/harmony-one/dot-country/blob/main/contracts/contracts/DC.sol) (1.country release version)
 ## Installing
 ```shell
 npm i one-country-sdk --save
@@ -48,13 +49,14 @@ const price = await oneCountry.getPriceByName('all')
 ## Configuration
 #### Example
 ```shell
-import { OneCountry, VanityUrl, ShortReelsVideos, DC } from 'one-country-sdk'
+import { OneCountry, VanityUrl, ShortReelsVideos, DC, DCEns } from 'one-country-sdk'
 
 const provider = await detectEthereumProvider()
 const oneCountry = new OneCountry({ provider, contractAddress: '0x3cC3C5F98AC3FF544279919DfceBfb7aFe03A2cA' })
 const vanityUrl = new VanityUrl({ provider, contractAddress: '0x88a1afC4134f385337Dd5F530D452079fC9E14CC' })
 const shortVideos = new ShortReelsVideos({ provider, contractAddress: '0x3a6843f2AbC3CA960845108908Eae8D9d9CE058D' })
 const dc = new DC({ provider, contractAddress: '0x3C84F4690De96a0428Bc6777f5aA5f5a92150Ef2' })
+const dcEns = new DCEns({ provider, contractAddress: '0xeFC73fB07660464aA03A5790D011DA0512c5854f' })
 ```
 
 #### Options
