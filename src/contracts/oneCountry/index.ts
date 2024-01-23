@@ -27,7 +27,6 @@ export class OneCountry extends OneCountryBase {
       .getPrice(nameBytes)
       .call()
   }
-
   public async getRecordByName (name: string) {
     const nameBytes = Web3.utils.keccak256(name)
     const result = await this.contract.methods
